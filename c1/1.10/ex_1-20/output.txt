@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+#define TABSIZE 8        /* number of stops for tab */
+#define MAXLINE 1000     /* maximum line length */
+
+int gline(char s[], int lim);
+
+/*
+ *       K&R Exercise 1-20
+ *       Replace tabs in input with blanks.
+ *       Assume a fixed set of tab stops,
+ *       every TABSIZE columns.
+ */
+
+main()
+{
+         int j, i;
+         int len;
+         char line[MAXLINE];
+
+         while((len = gline(line, MAXLINE)) > 0) {
+                 for (i=0; i<=len-1; ++i) {
+                        if (line[i] == '\t')
+                              for (j=0; j<=(TABSIZE - (i % TABSIZE)); ++j)
+                                   putchar(' ');
+                        else
+                              putchar(line[i]);
+                 }
+         }
+}
+
+/* gline: read a line into s, return length */
+int gline(char s[], int lim)
+{
+         int c, i;
+         
+         for (i=0; i<lim-1 && (c=getchar()) != EOF && c!='\n'; ++i)
+                 s[i] = c;
+         if (c == '\n') {
+                 s[i] = c;
+                 ++i;
+         }
+         s[i] = '\0';
+         return i;
+}

@@ -1,0 +1,206 @@
+#include <stdio.h>
+#include <limits.h>
+#include <float.h>
+
+signed char scmin();
+signed short ssmin();
+signed int simin();
+signed long slmin();
+float fepsilon();
+double depsilon();
+float f_min();
+double dmin();
+long double ldmin();
+
+/*
+ * K&R Exercise 2-1
+ *
+ * Determine the ranges of char, short, int,
+ * and long variables, both signed and
+ * unsigned, by printing appropriate values 
+ * from standard headers and by direct 
+ * computation. Harder if you compute them:
+ * determine the ranges of the various
+ * floating point types.
+ *
+ * Author: Thomas Scrace <tom@scrace.org>
+ */
+
+main()
+{
+	unsigned char cmn, cmx;
+	signed char scmn, scmx;
+	unsigned short smn, smx;
+	signed short ssmn, ssmx;
+	unsigned int imn, imx;
+	signed int simn, simx;
+	unsigned long lmn, lmx;
+	signed long slmn, slmx;
+
+	float fepsln;
+	double depsln;
+
+	float fmn, fmx;
+	double dmn, dmx;
+	long double ldmn, ldmx;
+
+	cmx = -1;
+	cmn = cmx + 1;
+	scmn = scmin();
+	scmx = scmn - 1;
+	smx = -1;
+	smn = smx + 1;
+	ssmn = ssmin();
+	ssmx = ssmn - 1;
+	imx = -1;
+	imn = imx + 1;
+	simn = simin();
+	simx = simn - 1;
+	lmx = -1;
+	lmn = lmx + 1;
+	slmn = slmin();
+	slmx = slmn - 1;
+
+	fepsln = fepsilon();
+	depsln = depsilon();
+
+	fmn = f_min();
+	fmx = fmn - fepsln;
+	dmn = dmin();
+	dmx = dmn - depsln;
+	ldmn = ldmin();
+	ldmx = ldmn - depsln;
+
+	printf("\n*********************INTEGRAL TYPES************************\n\n");
+
+	printf("---------------values from standard headers---------------\n\n");
+
+	printf("%21d :    char    : %d\n", 0, UCHAR_MAX);
+	printf("%21d : signed char: %d\n", CHAR_MIN, CHAR_MAX);
+	printf("%21d :    short   : %d\n", 0, USHRT_MAX);
+	printf("%21d :signed short: %d\n", SHRT_MIN, SHRT_MAX);
+	printf("%21d :     int    : %u\n", 0, UINT_MAX);
+	printf("%21d : signed int : %d\n", INT_MIN, INT_MAX);
+	printf("%21d :    long    : %lu\n", 0, ULONG_MAX);
+        printf("%21ld :signed long : %ld\n", LONG_MIN, LONG_MAX);
+	
+	printf("\n---------------values by direct computation---------------\n\n");
+		
+        printf("%21d :    char    : %d\n", cmn, cmx);
+       	printf("%21d : signed char: %d\n", scmn, scmx);
+        printf("%21d :    short   : %d\n", smn, smx);
+        printf("%21d :signed short: %d\n", ssmn, ssmx);
+        printf("%21d :     int    : %u\n", imn, imx);
+        printf("%21d : signed int : %d\n", simn, simx);
+        printf("%21d :    long    : %lu\n", lmn, lmx);
+        printf("%21ld :signed long : %ld\n", slmn, slmx);
+	
+        printf("\n******************FLOATING-POINT TYPES*********************\n\n");
+
+	printf("---------------values from standard headers---------------\n\n");
+
+        printf("%21.6e :    float    : %0.6e\n", FLT_MIN, FLT_MAX);
+        printf("%21.10e :    double   : %0.10e\n", DBL_MIN, DBL_MAX);
+        printf("%21.10e : long double : %0.10e\n", DBL_MIN, DBL_MAX);
+
+        printf("\n---------------values by direct computation---------------\n\n");
+
+	printf("%21.6e :    float    : %0.6e\n", fmn, fmx);
+        printf("%21.10e :    double   : %0.10e\n", dmn, dmx);
+        printf("%21.10e : long double : %0.10e\n", ldmn, ldmx);
+
+	
+	
+	return 0;
+}
+
+signed char scmin()
+{
+        signed char c, tmp;
+
+        for (c = tmp = -2; c < 0; c = c * 2) {
+		tmp = c;
+        }
+        return tmp;
+}
+
+signed short ssmin() 
+{
+        signed short s, tmp;
+
+        for (s = tmp = -2; s < 0; s = s * 2) {
+               tmp = s;
+        }
+        return tmp;
+}
+
+signed int simin()
+{
+        signed int i, tmp;
+        for (i = tmp = -2;i < 0; i = i * 2) {
+		tmp = i;
+        }
+        return tmp;
+}
+
+signed long slmin()
+{
+        signed long l, tmp;
+
+        for (l = tmp = -2; l < 0; l = l * 2)
+		tmp = l;
+
+        return tmp;
+}
+
+float fepsilon()
+{
+        float i;
+
+        for (i = 0.1f; 1.0f + i != 1.0f;)
+                i = i / 10.0f;
+        return i;
+}
+
+double depsilon()
+{
+	double i;
+
+	for (i = 0.1; 1.0 + i != 1.0;)
+		i = i / 10.0;
+	return i;
+}
+
+float f_min()
+{
+	float f, tmp;
+	float epsilon = fepsilon();
+
+	for (f = tmp = epsilon * -1.0f; f < 0.0f; f = f * f)
+		tmp = f;
+	return tmp;
+}
+
+double dmin()
+{
+	double d, tmp;
+	double epsilon = depsilon();
+
+	for (d = tmp = epsilon * -1.0; d < 0.0; d = d * 2.0)
+		tmp = d;
+	return tmp;
+}
+
+long double ldmin()
+{
+	long double ld, tmp;
+	long double epsilon = depsilon();
+
+	for (ld = tmp = epsilon * -1.0; ld < 0.0; ld = ld * 2.0)
+		tmp = ld;
+	return tmp;
+}
+
+
+
+
